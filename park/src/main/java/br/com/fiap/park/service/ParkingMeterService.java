@@ -1,5 +1,6 @@
 package br.com.fiap.park.service;
 
+import br.com.fiap.park.config.annotations.CarNotParkingException;
 import br.com.fiap.park.dto.request.ParkInfoResponse;
 import br.com.fiap.park.dto.request.ParkRequest;
 import br.com.fiap.park.dto.request.ParkingMeterRequest;
@@ -27,20 +28,15 @@ public class ParkingMeterService {
     }
 
     public ParkingMeter toModel(ParkingMeterRequest parkingMeterRequest) {
-        ParkingMeter parkingMeter = new ParkingMeter(parkingMeterRequest.status(), parkingMeterRequest.funcionamento());
+        ParkingMeter parkingMeter = new ParkingMeter(parkingMeterRequest.status());
         parkingMeterRepository.save(parkingMeter);
         return parkingMeter;
     }
 
     public ParkInfoResponse parkCar(ParkRequest parkParkingMeterRequest) {
         Optional<ParkingMeter> parkingMeter = parkingMeterRepository.findById(parkParkingMeterRequest.idParkingMeter());
-        //TODO: Validação se o parkingMeter já tiver sendo usado
         Optional<Vehicle> vehicle = vehicleRepository.findById(parkParkingMeterRequest.licensePlate());
-        //TODO: Pensar de deixar somente um atributo no parkquimetro
-        parkingMeter.ifPresent(p -> {
-            p.setStatus(true);
-            p.setFuncionamento(true);
-        });
+        parkingMeter.ifPresent(p -> p.setStatus(true));
         parkingMeterRepository.save(parkingMeter.get());
         initialTime = LocalDateTime.now();
         return new ParkInfoResponse(initialTime, vehicle.get().getLicensePlate(),parkingMeter.get().getId());
@@ -48,17 +44,26 @@ public class ParkingMeterService {
 
     public TotalParkInfoResponse exitCar(ParkRequest parkParquimetroRequest){
         LocalDateTime finalTime = LocalDateTime.now();
+        if(initialTime == null){
+            try {
+                throw new CarNotParkingException("Car not parking yet, please check again !");
+            } catch (CarNotParkingException e) {
+                throw new RuntimeException(e);
+            }
+        }
         Duration duration = Duration.between(initialTime, finalTime);
-        return new TotalParkInfoResponse(initialTime, finalTime, parkParquimetroRequest.licensePlate(), calculateParking(duration));
+        return new TotalParkInfoResponse(parkParquimetroRequest.licensePlate(),initialTime, finalTime, calculateParking(duration));
     }
 
     private Float calculateParking(Duration duration) {
-        Long seconds = duration.toSeconds();
-        Long minutes = duration.toMinutes();
-        Long hours = duration.toHours();
-        Long days = duration.toDays();
-
-        return 2f;
+        long minutes = duration.toMinutes();
+        long days = duration.toDays();
+        if(days > 1){
+            return (float) days * 200;
+        } else if (minutes <= 10){
+            return 0.0f;
+        }
+        return minutes * 0.3f;
     }
 
 }

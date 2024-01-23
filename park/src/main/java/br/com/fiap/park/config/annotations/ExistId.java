@@ -1,4 +1,4 @@
-package br.com.fiap.park.annotations;
+package br.com.fiap.park.config.annotations;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

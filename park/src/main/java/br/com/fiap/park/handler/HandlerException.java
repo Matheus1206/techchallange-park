@@ -1,5 +1,6 @@
 package br.com.fiap.park.handler;
 
+import br.com.fiap.park.config.annotations.CarNotParkingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,4 +15,9 @@ public class HandlerException {
         return exception.getBindingResult().getFieldError().getDefaultMessage();
     }
 
+    @ExceptionHandler({CarNotParkingException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String carNotParkingException(CarNotParkingException exception){
+        return exception.getMessage();
+    }
 }

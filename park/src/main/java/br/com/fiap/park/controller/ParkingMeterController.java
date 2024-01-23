@@ -3,6 +3,7 @@ package br.com.fiap.park.controller;
 import br.com.fiap.park.dto.request.ParkInfoResponse;
 import br.com.fiap.park.dto.request.ParkRequest;
 import br.com.fiap.park.dto.request.ParkingMeterRequest;
+import br.com.fiap.park.dto.request.TotalParkInfoResponse;
 import br.com.fiap.park.model.ParkingMeter;
 import br.com.fiap.park.service.ParkingMeterService;
 import jakarta.validation.Valid;
@@ -33,7 +34,7 @@ public class ParkingMeterController {
     }
 
     @PostMapping("exit")
-    public ResponseEntity<?> exit(@RequestBody @Valid ParkRequest parkParquimetroRequest){
+    public ResponseEntity<TotalParkInfoResponse> exit(@RequestBody @Valid ParkRequest parkParquimetroRequest){
         return ResponseEntity.ok(parkingMeterService.exitCar(parkParquimetroRequest));
     }
 

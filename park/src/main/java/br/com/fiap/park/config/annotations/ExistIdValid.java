@@ -1,4 +1,4 @@
-package br.com.fiap.park.annotations;
+package br.com.fiap.park.config.annotations;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

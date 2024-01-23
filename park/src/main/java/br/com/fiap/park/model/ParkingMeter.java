@@ -10,15 +10,11 @@ public class ParkingMeter {
     private Long id;
 
     private boolean status = true;
-
-    private boolean operation = false;
-
     @Deprecated
     public ParkingMeter(){}
 
-    public ParkingMeter(boolean status, boolean operation){
+    public ParkingMeter(boolean status){
         this.status = status;
-        this.operation = operation;
     }
 
     public Long getId() {
@@ -27,14 +23,6 @@ public class ParkingMeter {
 
     public boolean isStatus() {
         return status;
-    }
-
-    public boolean isFuncionamento() {
-        return operation;
-    }
-
-    public void setFuncionamento(boolean funcionamento) {
-        this.operation = funcionamento;
     }
 
     public void setStatus(boolean status) {
