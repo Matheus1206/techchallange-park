@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/v1/api/parkingmeter")
 public class ParkingMeterController {
@@ -23,15 +25,20 @@ public class ParkingMeterController {
         return parkingMeterService.toModel(parkingMeterRequest);
     }
 
-    @PostMapping("park")
-    public ResponseEntity<ParkInfoResponse> park(@RequestBody @Valid ParkRequest parkParquimetroRequest) throws CarNotParkingException {
-        return ResponseEntity.ok(parkingMeterService.parkCar(parkParquimetroRequest));
+    @GetMapping("{id}")
+    public Optional<ParkingMeter> get(@PathVariable Long id){
+        return parkingMeterService.getParkingMeter(id);
     }
 
-    @PostMapping("exit")
-    public ResponseEntity<TotalParkInfoResponse> exit(@RequestBody @Valid ParkRequest parkParquimetroRequest) throws CarNotParkingException {
-        return ResponseEntity.ok(parkingMeterService.exitCar(parkParquimetroRequest));
-    }
+//    @PostMapping("park")
+//    public ResponseEntity<ParkInfoResponse> park(@RequestBody @Valid ParkRequest parkParquimetroRequest) throws CarNotParkingException {
+//        return ResponseEntity.ok(parkingMeterService.parkCar(parkParquimetroRequest));
+//    }
+//
+//    @PostMapping("exit")
+//    public ResponseEntity<TotalParkInfoResponse> exit(@RequestBody @Valid ParkRequest parkParquimetroRequest) throws CarNotParkingException {
+//        return ResponseEntity.ok(parkingMeterService.exitCar(parkParquimetroRequest));
+//    }
 
     @GetMapping("status/{id}")
     public ResponseEntity<StatusParkMeterResponse> status(@PathVariable Long id){

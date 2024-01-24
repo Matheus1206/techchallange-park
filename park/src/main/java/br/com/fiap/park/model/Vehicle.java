@@ -1,13 +1,14 @@
 package br.com.fiap.park.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "VEHICLE")
 public class Vehicle {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "LICENSEPLATE")
     private String licensePlate;
 

@@ -10,9 +10,17 @@ public class CustomerService {
 
     private CustomerRepository customerRepository;
 
+    public CustomerService(CustomerRepository customerRepository){
+        this.customerRepository = customerRepository;
+    }
+
     public Customer toModel(CustomerRequest customerRequest) {
         Customer customer = new Customer(customerRequest.nome(), customerRequest.cpf());
         customerRepository.save(customer);
         return customer;
+    }
+
+    public Customer getCustomer(String cpf) {
+        return customerRepository.findByCpf(cpf);
     }
 }

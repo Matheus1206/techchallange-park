@@ -14,6 +14,8 @@ public class Customer {
 
     private String cpf;
 
+    public Customer() {}
+
     public Customer(String nome, String cpf) {
         this.nome = nome;
         this.cpf = cpf;
