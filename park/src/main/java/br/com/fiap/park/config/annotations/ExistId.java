@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ExistIdValid.class)
 public @interface ExistId {
-    String message() default "Id does not exist";
+    String message() default "Object not exist";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
     String fieldName();

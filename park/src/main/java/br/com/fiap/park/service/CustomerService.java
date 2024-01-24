@@ -1,6 +1,6 @@
 package br.com.fiap.park.service;
 
-import br.com.fiap.park.dto.request.CustomerRequest;
+import br.com.fiap.park.dto.CustomerRequest;
 import br.com.fiap.park.model.Customer;
 import br.com.fiap.park.repository.CustomerRepository;
 import org.springframework.stereotype.Service;

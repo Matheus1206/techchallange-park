@@ -1,4 +1,4 @@
-package br.com.fiap.park.config.annotations;
+package br.com.fiap.park.config;
 
 public class CarNotParkingException extends Exception {
 

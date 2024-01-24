@@ -1,17 +1,12 @@
 package br.com.fiap.park.controller;
 
-import br.com.fiap.park.dto.request.ParkInfoResponse;
-import br.com.fiap.park.dto.request.ParkRequest;
-import br.com.fiap.park.dto.request.ParkingMeterRequest;
-import br.com.fiap.park.dto.request.TotalParkInfoResponse;
+import br.com.fiap.park.config.CarNotParkingException;
+import br.com.fiap.park.dto.*;
 import br.com.fiap.park.model.ParkingMeter;
 import br.com.fiap.park.service.ParkingMeterService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/api/parkingmeter")
@@ -29,14 +24,29 @@ public class ParkingMeterController {
     }
 
     @PostMapping("park")
-    public ResponseEntity<ParkInfoResponse> park(@RequestBody @Valid ParkRequest parkParquimetroRequest){
+    public ResponseEntity<ParkInfoResponse> park(@RequestBody @Valid ParkRequest parkParquimetroRequest) throws CarNotParkingException {
         return ResponseEntity.ok(parkingMeterService.parkCar(parkParquimetroRequest));
     }
 
     @PostMapping("exit")
-    public ResponseEntity<TotalParkInfoResponse> exit(@RequestBody @Valid ParkRequest parkParquimetroRequest){
+    public ResponseEntity<TotalParkInfoResponse> exit(@RequestBody @Valid ParkRequest parkParquimetroRequest) throws CarNotParkingException {
         return ResponseEntity.ok(parkingMeterService.exitCar(parkParquimetroRequest));
     }
 
+    @GetMapping("status/{id}")
+    public ResponseEntity<StatusParkMeterResponse> status(@PathVariable Long id){
+        return ResponseEntity.ok(parkingMeterService.statusParkingMeter(id));
+
+    }
+
+    @PutMapping("status/{id}")
+    public ResponseEntity<StatusParkMeterResponse> setStatus(@PathVariable Long id, @RequestParam boolean status){
+        return ResponseEntity.ok(parkingMeterService.setStatusParkingMeter(id, status));
+    }
+
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id){
+        return ResponseEntity.ok(parkingMeterService.deleteParkingMeter(id));
+    }
 
 }

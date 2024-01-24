@@ -1,4 +1,4 @@
-package br.com.fiap.park.dto.request;
+package br.com.fiap.park.dto;
 
 import br.com.fiap.park.config.annotations.ExistId;
 import br.com.fiap.park.model.ParkingMeter;

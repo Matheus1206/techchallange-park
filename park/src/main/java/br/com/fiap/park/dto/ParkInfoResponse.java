@@ -1,4 +1,4 @@
-package br.com.fiap.park.dto.request;
+package br.com.fiap.park.dto;
 
 import java.time.LocalDateTime;
 
