@@ -21,8 +21,8 @@ public class ParkingMeterController {
     }
 
     @PostMapping("create")
-    public ParkingMeter create(@RequestBody ParkingMeterRequest parkingMeterRequest){
-        return parkingMeterService.toModel(parkingMeterRequest);
+    public ParkingMeter create(){
+        return parkingMeterService.toModel();
     }
 
     @GetMapping("{id}")
@@ -30,15 +30,15 @@ public class ParkingMeterController {
         return parkingMeterService.getParkingMeter(id);
     }
 
-//    @PostMapping("park")
-//    public ResponseEntity<ParkInfoResponse> park(@RequestBody @Valid ParkRequest parkParquimetroRequest) throws CarNotParkingException {
-//        return ResponseEntity.ok(parkingMeterService.parkCar(parkParquimetroRequest));
-//    }
-//
-//    @PostMapping("exit")
-//    public ResponseEntity<TotalParkInfoResponse> exit(@RequestBody @Valid ParkRequest parkParquimetroRequest) throws CarNotParkingException {
-//        return ResponseEntity.ok(parkingMeterService.exitCar(parkParquimetroRequest));
-//    }
+    @PostMapping("park")
+    public ResponseEntity<ParkInfoResponse> park(@RequestBody @Valid ParkRequest parkParquimetroRequest) throws CarNotParkingException {
+        return ResponseEntity.ok(parkingMeterService.parkCar(parkParquimetroRequest));
+    }
+
+    @PostMapping("exit")
+    public ResponseEntity<TotalParkInfoResponse> exit(@RequestBody @Valid ParkRequest parkParquimetroRequest) throws CarNotParkingException {
+        return ResponseEntity.ok(parkingMeterService.exitCar(parkParquimetroRequest));
+    }
 
     @GetMapping("status/{id}")
     public ResponseEntity<StatusParkMeterResponse> status(@PathVariable Long id){

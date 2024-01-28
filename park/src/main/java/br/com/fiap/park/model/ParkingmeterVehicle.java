@@ -9,17 +9,27 @@ import java.time.LocalDateTime;
 @Table(name = "PARKINGMETER_VEHICLE")
 public class ParkingmeterVehicle {
 
-    @EmbeddedId
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @OneToOne
     private ParkingMeter parkingMeter;
 
-    @EmbeddedId
     @OneToOne
     private Vehicle vehicle;
 
     private LocalDateTime initialTime;
 
     private LocalDateTime finalTime;
+
+    public ParkingmeterVehicle() {}
+
+    public ParkingmeterVehicle(ParkingMeter parkingMeter, Vehicle vehicle) {
+        this.parkingMeter = parkingMeter;
+        this.vehicle = vehicle;
+        this.initialTime = LocalDateTime.now();
+    }
 
     public ParkingMeter getParkingMeter() {
         return parkingMeter;

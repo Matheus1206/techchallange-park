@@ -3,8 +3,10 @@ package br.com.fiap.park.service;
 import br.com.fiap.park.config.CarNotParkingException;
 import br.com.fiap.park.dto.*;
 import br.com.fiap.park.model.ParkingMeter;
+import br.com.fiap.park.model.ParkingmeterVehicle;
 import br.com.fiap.park.model.Vehicle;
 import br.com.fiap.park.repository.ParkingMeterRepository;
+import br.com.fiap.park.repository.ParkingMeterVehicleRepository;
 import br.com.fiap.park.repository.VehicleRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,38 +17,58 @@ import java.util.Optional;
 @Service
 public class ParkingMeterService {
     private ParkingMeterRepository parkingMeterRepository;
+
     private VehicleRepository vehicleRepository;
 
-    public ParkingMeterService(ParkingMeterRepository parkingMeterRepository, VehicleRepository vehicleRepository){
+    private ParkingMeterVehicleRepository parkingMeterVehicleRepository;
+
+    public ParkingMeterService(ParkingMeterRepository parkingMeterRepository, VehicleRepository vehicleRepository, ParkingMeterVehicleRepository parkingMeterVehicleRepository){
         this.parkingMeterRepository = parkingMeterRepository;
         this.vehicleRepository = vehicleRepository;
+        this.parkingMeterVehicleRepository = parkingMeterVehicleRepository;
     }
 
-    public ParkingMeter toModel(ParkingMeterRequest parkingMeterRequest) {
-        ParkingMeter parkingMeter = new ParkingMeter(parkingMeterRequest.status());
+    public ParkingMeter toModel() {
+        ParkingMeter parkingMeter = new ParkingMeter();
         parkingMeterRepository.save(parkingMeter);
         return parkingMeter;
     }
 
-//    public ParkInfoResponse parkCar(ParkRequest parkParkingMeterRequest) throws CarNotParkingException {
-//        Optional<ParkingMeter> parkingMeter = parkingMeterRepository.findById(parkParkingMeterRequest.idParkingMeter());
-//        Optional<Vehicle> vehicle = vehicleRepository.findById(parkParkingMeterRequest.licensePlate());
-//        if(parkingMeter.get().getStatus()) throw new CarNotParkingException("ParkingMeter is used now");
-//        parkingMeter.ifPresent(p -> p.setStatus(true));
-//        parkingMeter.get().setInitialTime(LocalDateTime.now());
-//        parkingMeterRepository.save(parkingMeter.get());
-//        return new ParkInfoResponse(parkingMeter.get().getInitialTime(), vehicle.get().getLicensePlate(),parkingMeter.get().getId());
-//    }
+    public ParkInfoResponse parkCar(ParkRequest parkParkingMeterRequest) throws CarNotParkingException {
+        Optional<ParkingMeter> parkingMeter = parkingMeterRepository.findById(parkParkingMeterRequest.id());
+        Optional<Vehicle> vehicle = vehicleRepository.findByLicensePlate(parkParkingMeterRequest.licensePlate());
 
-//    public TotalParkInfoResponse exitCar(ParkRequest parkParquimetroRequest) throws CarNotParkingException {
-//        Optional<ParkingMeter> parkingMeter = parkingMeterRepository.findById(parkParquimetroRequest.idParkingMeter());
-//        LocalDateTime finalTime = LocalDateTime.now();
-//        if(parkingMeter.get().getInitialTime() == null) throw new CarNotParkingException("Car not parking yet, please check again !");
-//        parkingMeter.get().setFinalTime(finalTime);
-//        parkingMeterRepository.save(parkingMeter.get());
-//        Duration duration = Duration.between(parkingMeter.get().getInitialTime(), finalTime);
-//        return new TotalParkInfoResponse(parkParquimetroRequest.licensePlate(),parkingMeter.get().getInitialTime(), finalTime, calculateParking(duration));
-//    }
+        if(parkingMeter.get().getStatus()) throw new CarNotParkingException("ParkingMeter is used now");
+
+        parkingMeter.ifPresent(p -> p.setStatus(true));
+
+        ParkingmeterVehicle parkingmeterVehicle = new ParkingmeterVehicle(parkingMeter.get(), vehicle.get());
+        parkingMeterVehicleRepository.save(parkingmeterVehicle);
+
+        parkingMeterRepository.save(parkingMeter.get());
+
+        return new ParkInfoResponse(parkingmeterVehicle.getInitialTime(), vehicle.get().getLicensePlate(),parkingMeter.get().getId());
+    }
+
+    public TotalParkInfoResponse exitCar(ParkRequest parkParquimetroRequest) throws CarNotParkingException {
+        Optional<ParkingMeter> parkingMeter = parkingMeterRepository.findById(parkParquimetroRequest.id());
+        Optional<Vehicle> vehicle = vehicleRepository.findByLicensePlate(parkParquimetroRequest.licensePlate());
+        Optional<ParkingmeterVehicle> parkingmeterVehicle = parkingMeterVehicleRepository.findByParkingMeterAndVehicle(parkingMeter.get().getId(), vehicle.get().getId());
+
+        LocalDateTime finalTime = LocalDateTime.now();
+        System.out.println(parkingMeter.get().getStatus());
+        if(parkingmeterVehicle.get().getInitialTime() == null || !parkingMeter.get().getStatus()) throw new CarNotParkingException("Car not parked yet, please check again !");
+
+        parkingmeterVehicle.get().setFinalTime(finalTime);
+        parkingMeterVehicleRepository.save(parkingmeterVehicle.get());
+
+        Duration duration = Duration.between(parkingmeterVehicle.get().getInitialTime(), finalTime);
+
+        parkingMeter.get().setStatus(false);
+        parkingMeterRepository.save(parkingMeter.get());
+
+        return new TotalParkInfoResponse(parkParquimetroRequest.licensePlate(),parkingmeterVehicle.get().getInitialTime(), finalTime, calculateParking(duration));
+    }
 
     private Float calculateParking(Duration duration) {
         long minutes = duration.toMinutes();

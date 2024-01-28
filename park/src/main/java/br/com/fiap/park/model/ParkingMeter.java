@@ -14,7 +14,9 @@ public class ParkingMeter {
     private boolean status = true;
 
     @Deprecated
-    public ParkingMeter(){}
+    public ParkingMeter(){
+        this.status = false;
+    }
 
     public ParkingMeter(boolean status){
         this.status = status;
