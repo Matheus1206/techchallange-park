@@ -1,12 +1,16 @@
 # TECHCHALLENGE-PARK
 Projeto desenvolvido com o objetivo de criar uma API para o funcioanmento de um parquímetro.
 
-##Quais foram as tecnologias utilizas:
+## Quais foram as tecnologias e ferramentas utilizas:
   - Java
   - Spring
-  - Docker
+  - Docker 
+  - Miro ( https://miro.com/app/board/uXjVNAteCFM=/ )
 
-##Como utilizar o projeto:
+## Desafios encontrados e soluções implementadas
+
+
+## Como utilizar o projeto:
 
 1 - Efetue o clone do projeto para uma pasta de sua preferência
 
