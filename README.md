@@ -1,15 +1,17 @@
 # TECHCHALLENGE-PARK
 Projeto desenvolvido com o objetivo de criar uma API para o funcioanmento de um parquímetro.
 
-Quais foram as tecnologias utilizas:
-  Java
-  Spring
-  Docker
+[Quais foram as tecnologias utilizas:]
+  - Java
+  - Spring
+  - Docker
 
-Como utilizar o projeto
+[Como utilizar o projeto:]
 
 1 - Efetue o clone do projeto para uma pasta de sua preferência
 
-2 - Abra em uma IDE de sua escolha e execute o arquivo ParkApplication que automaticamente já será efetuada a execução do docker compose subindo o banco de dados
+2 - Abra o terminal de sua preferência e navegue até o projeto
 
-3 - Abra um navegador da sua preferência e acesse a url: http://localhost:8080/swagger-ui/index.html para conseguir acessar o swagger onde estão especificadas todas as apis e chamadas.
+3 - Execute o comando "mvn spring-boot:run"
+
+4 - Abra um navegador da sua preferência e acesse a url: http://localhost:8080/swagger-ui/index.html para conseguir acessar o swagger onde estão especificadas todas as apis e chamadas.
