@@ -56,7 +56,7 @@ public class ParkingMeterService {
         Optional<ParkingmeterVehicle> parkingmeterVehicle = parkingMeterVehicleRepository.findByParkingMeterAndVehicle(parkingMeter.get().getId(), vehicle.get().getId());
 
         LocalDateTime finalTime = LocalDateTime.now();
-        System.out.println(parkingMeter.get().getStatus());
+
         if(parkingmeterVehicle.get().getInitialTime() == null || !parkingMeter.get().getStatus()) throw new CarNotParkingException("Car not parked yet, please check again !");
 
         parkingmeterVehicle.get().setFinalTime(finalTime);

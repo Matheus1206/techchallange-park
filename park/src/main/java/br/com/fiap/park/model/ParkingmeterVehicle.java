@@ -5,18 +5,17 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Embeddable
 @Table(name = "PARKINGMETER_VEHICLE")
 public class ParkingmeterVehicle {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne
+    @ManyToOne(optional = false)
     private ParkingMeter parkingMeter;
 
-    @OneToOne
+    @ManyToOne(optional = false)
     private Vehicle vehicle;
 
     private LocalDateTime initialTime;
