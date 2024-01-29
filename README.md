@@ -1,8 +1,8 @@
 # TECHCHALLENGE-PARK
-Projeto desenvolvido com o objetivo de criar uma API para o funcioanmento de um parquímetro.
+Projeto desenvolvido com o objetivo de criar uma API para o funcionamento de um parquímetro.
 
-## Quais foram as tecnologias e ferramentas utilizas:
-  - Java
+## Quais foram as tecnologias e ferramentas utilizadas:
+  - Java 17
   - Spring
   - Docker
   - MySQL
