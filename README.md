@@ -4,7 +4,8 @@ Projeto desenvolvido com o objetivo de criar uma API para o funcioanmento de um 
 ## Quais foram as tecnologias e ferramentas utilizas:
   - Java
   - Spring
-  - Docker 
+  - Docker
+  - MySQL
   - Miro ( https://miro.com/app/board/uXjVNAteCFM=/ )
 
 ## Desafios encontrados e soluções implementadas
